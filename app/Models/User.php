@@ -46,4 +46,25 @@ class User extends Authenticatable
     public function userPosts(){
         return $this->hasMany(Post::class, 'user_id');
     }
+
+public function sentFriendRequests()
+{
+    return $this->hasMany(FriendRequest::class, 'sender_id');
+}
+
+public function receivedFriendRequests()
+{
+    return $this->hasMany(FriendRequest::class, 'receiver_id');
+}
+
+public function hasSentFriendRequest(User $user)
+{
+    return $this->sentFriendRequests()->where('receiver_id', $user->id)->exists();
+}
+
+public function hasReceivedFriendRequest(User $user)
+{
+    return $this->receivedFriendRequests()->where('sender_id', $user->id)->exists();
+}
+
 }

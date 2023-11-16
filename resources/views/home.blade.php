@@ -24,6 +24,7 @@
 </div>
 
 <div style="border: 3px solid black;">
+<p><h2><a href="/friends">Friends</a></h2></p>
 <h2>News Feed</h2>
 @foreach($posts as $post)
     <div style="background-color: gray; padding: 10px; margin: 10px">

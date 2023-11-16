@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FriendController;
 use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Postcontroller;
@@ -31,3 +32,9 @@ Route::post('create-post', [Postcontroller::class, 'createPost']);
 Route::get('/edit-post/{post}', [Postcontroller::class, 'showEditscreen']);
 Route::put('/edit-post/{post}', [Postcontroller::class, 'updatedPost']);
 Route::delete('/delete-post/{postId}', [Postcontroller::class, 'deletePost'])->name('deletePost');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/friends', [FriendController::class, 'friendScreen']);
+    Route::post('/send-friend-request/{friend}', 'FriendController@sendFriendRequest')->name('send-friend-request');
+    Route::post('/accept-friend-request/{friend}', 'FriendController@acceptFriendRequest')->name('accept-friend-request');
+});
