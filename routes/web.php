@@ -1,12 +1,7 @@
 <?php
 
-use App\Http\Controllers\FriendController;
-use App\Models\Post;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Postcontroller;
-use App\Http\Controllers\Usercontroller;
-
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,22 +14,17 @@ use App\Http\Controllers\Usercontroller;
 */
 
 Route::get('/', function () {
-    $posts = Post::all();
-    return view('home',['posts' => $posts]);
+    return view('welcome');
 });
 
-Route::post('/register', [Usercontroller::class, 'register']);
-Route::post('/logout',[Usercontroller::class,'logout']);
-Route::post('/login',[Usercontroller::class,'login']);
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-//Blog post related routes
-Route::post('create-post', [Postcontroller::class, 'createPost']);
-Route::get('/edit-post/{post}', [Postcontroller::class, 'showEditscreen']);
-Route::put('/edit-post/{post}', [Postcontroller::class, 'updatedPost']);
-Route::delete('/delete-post/{postId}', [Postcontroller::class, 'deletePost'])->name('deletePost');
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/friends', [FriendController::class, 'friendScreen']);
-    Route::post('/send-friend-request/{friend}', 'FriendController@sendFriendRequest')->name('send-friend-request');
-    Route::post('/accept-friend-request/{friend}', 'FriendController@acceptFriendRequest')->name('accept-friend-request');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+require __DIR__.'/auth.php';
