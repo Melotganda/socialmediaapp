@@ -5,8 +5,6 @@
     <title>Document</title>
 </head>
 <body>
-    
-@section('content')
     <div class="container">
         <h2>Your Friends</h2>
         <ul>
@@ -30,6 +28,5 @@
             @endforeach
         </ul>
     </div>
-@endsection
 </body>
 </html>
