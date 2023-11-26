@@ -5,28 +5,24 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="container">
+    <h2><a href="/">Back to News Feed</a></h2>
+    <div style="border: 3px solid black;">
         <h2>Your Friends</h2>
-        <ul>
             @foreach($friends as $friend)
+            <div style="border: 3px solid black;">
                 <li>{{ $friend->name }}</li>
             @endforeach
-        </ul>
-
-        <h2>Users</h2>
-        <ul>
+    </div>
+    <div style="border: 3px solid black;">
+        <h2>Friend Suggestions</h2>
+        <div style="background-color: gray; padding: 10px; margin: 10px">
             @foreach($users as $user)
-                <li>
                     {{ $user->name }}
-                    @if(!$user->isFriend(Auth::user()))
                         <form action="{{ route('add.friend', ['id' => $user->id]) }}" method="post">
                             @csrf
                             <button type="submit">Add Friend</button>
                         </form>
-                    @endif
-                </li>
             @endforeach
-        </ul>
     </div>
 </body>
 </html>
