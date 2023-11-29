@@ -12,7 +12,7 @@ class HomeController extends Controller
         if(Auth::id())
         {
             $role=Auth()->user()->role;
-
+  
             if($role == 'user')
             {
                 return view('/');
