@@ -10,7 +10,12 @@
         <h2>Your Friends</h2>
             @foreach($friends as $friend)
             <div style="border: 3px solid black;">
-                <li>{{ $friend->name }}</li>
+                <h3>{{ $friend->name }}</h3>
+                <form method="post" action="/delete-friend/{{ $friend->id }}">
+            @csrf
+            @method('delete')
+            <button type="submit">Unfriend</button>
+        </form>
             @endforeach
     </div>
     <div style="border: 3px solid black;">

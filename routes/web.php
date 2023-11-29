@@ -50,5 +50,7 @@ Route::delete('/delete-post/{post}',[PostController::class,'deletePost']);
 Route::get('/friend',[FriendController::class,'friendscreen']);
 Route::get('/friend', [FriendController::class, 'index'])->name('home');
 Route::post('/user/{id}/add-friend', [UserController::class, 'addFriend'])->name('add.friend');
+Route::delete('/delete-friend/{friend}',[FriendController::class,'deleteFriend']);
+
 
 
