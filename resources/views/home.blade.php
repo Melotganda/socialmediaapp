@@ -30,6 +30,23 @@
     <div style="background-color: gray; padding: 10px; margin: 10px">
         <h3>{{ $post['title'] }} by {{ $post->user->name }}</h3>
         {{ $post['body'] }}
+        <p>Likes: {{ $post->likes->count() }}</p>
+        @if(auth()->check())
+    @if(auth()->user()->likes->contains('post_id', $post->id))
+        <form method="post" action="{{ route('posts.unlike', $post) }}">
+            @csrf
+            @method('DELETE')
+            <button type="submit">Unlike</button>
+        </form>
+    @else
+        <form method="post" action="{{ route('posts.like', $post) }}">
+            @csrf
+            <button type="submit">Like</button>
+        </form>
+    @endif
+@endif
+<p><a href="/postcomments/{{ $post->id }}">Comments: {{ $post->comments->count() }}</a></p>
+
         <p><a href="/edit-post/{{ $post->id }}">Edit</a></p>
 
         <form method="post" action="/delete-post/{{ $post->id }}">
