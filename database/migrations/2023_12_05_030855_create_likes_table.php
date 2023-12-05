@@ -7,16 +7,17 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.``
+     * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('friends', function (Blueprint $table) {
+        Schema::create('likes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sender_id');
-            $table->foreignId('receiver_id');
-            $table->enum('status', ['pending', 'accepted'])->default('pending');
+            $table->foreignId('user_id');
+            $table->foreignId('post_id');
             $table->timestamps();
+
+            $table->unique(['user_id', 'post_id']);
         });
     }
 
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('friends');
+        Schema::dropIfExists('likes');
     }
 };

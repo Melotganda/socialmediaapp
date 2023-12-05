@@ -45,8 +45,42 @@ class User extends Authenticatable
     public function userPosts(){
         return $this->hasMany(Post::class, 'user_id');
     }
-    public function friends()
+    protected $with = ['likes'];
+
+    public function likes()
     {
-        return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id');
+        return $this->hasMany(Like::class);
+    }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }   
+    public function hasReceivedFriendRequestFrom(User $user)
+    {
+        return $this->receivedFriendRequests()->where('sender_id', $user->id)->exists();
+    }
+    public function sentFriendRequests()
+    {
+        return $this->hasMany(Friend::class, 'sender_id');
+    }
+
+    public function receivedFriendRequests()
+    {
+        return $this->hasMany(Friend::class, 'receiver_id');
+    }
+    public function isFriendWith(User $user)
+        {
+            return $this->friends->contains($user);
+        }
+        public function friends()
+    {
+        return $this->belongsToMany(User::class, 'friends', 'sender_id', 'receiver_id')
+            ->wherePivot('status', 'accepted')
+            ->orWhere(function ($query) {
+                $query->where('receiver_id', $this->id)
+                    ->where('sender_id', auth()->id())
+                    ->where('status', 'accepted');
+            })
+            ->withTimestamps();
     }
 }
