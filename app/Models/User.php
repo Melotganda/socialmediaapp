@@ -76,11 +76,6 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'friends', 'sender_id', 'receiver_id')
             ->wherePivot('status', 'accepted')
-            ->orWhere(function ($query) {
-                $query->where('receiver_id', $this->id)
-                    ->where('sender_id', auth()->id())
-                    ->where('status', 'accepted');
-            })
             ->withTimestamps();
     }
 }
