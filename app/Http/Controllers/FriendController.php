@@ -10,18 +10,28 @@ use Illuminate\Support\Facades\Auth;
 class FriendController extends Controller
 {
     public function index()
-    { 
+    {
+        $sentFriendRequests = auth()->user()->sentFriendRequests;
+        $receivedFriendRequests = auth()->user()->receivedFriendRequests;
+        $friends = auth()->user()->friends;
+
+
+        $myFriends = Friend::where(function ($query) {
+            $query->where('sender_id', auth()->id())->where('status', 'accepted');
+        })->orWhere(function ($query) {
+            $query->where('receiver_id', auth()->id())->where('status', 'accepted');
+        })->pluck('receiver_id')->toArray();
+
+        $friendSuggestions = User::whereNotIn('id', $myFriends)->get();
         $user = Auth::user();
-        $friends = $user->friends;
 
         $users = User::whereNotIn('id', $friends->pluck('id')->push($user->id))->where('id', '!=', $user->id)->get();
 
-
-        return view('friend', compact('friends', 'users'));
+        return view('friend', compact('sentFriendRequests', 'receivedFriendRequests', 'myFriends', 'users', 'friendSuggestions'));
     }
     public function rejectRequest(Friend $friendRequest)
     {
-        $friendRequest->update(['status' => 'rejected']);
+        $friendRequest->delete();
 
         return back();
     }

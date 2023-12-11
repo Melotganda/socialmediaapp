@@ -59,6 +59,8 @@ Route::post('/send-friend-request/{receiver}', [FriendController::class, 'sendRe
         ->name('friend-requests.accept');
     Route::post('/reject-friend-request/{friendRequest}', [FriendController::class, 'rejectRequest'])
         ->name('friend-requests.reject');
+    Route::get('/friends', [FriendController::class, 'index'])->name('friend');
+
 });
 
 //Like Controller
