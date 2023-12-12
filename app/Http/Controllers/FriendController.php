@@ -15,6 +15,16 @@ class FriendController extends Controller
         $receivedFriendRequests = auth()->user()->receivedFriendRequests;
         $friends = auth()->user()->friends;
 
+        $friendRequests = Friend::where(function ($query) {
+            $query->where('sender_id', auth()->id())->where('status', 'pending');
+        })->orWhere(function ($query) {
+            $query->where('receiver_id', auth()->id())->where('status', 'pending');
+        })->orWhere(function ($query) {
+            $query->where('receiver_id', auth()->id())->where('status', 'accepted');
+        })->orWhere(function ($query) {
+            $query->where('sender_id', auth()->id())->where('status', 'accepted');
+        })->pluck('receiver_id')->toArray();
+
 
         $myFriends = Friend::where(function ($query) {
             $query->where('sender_id', auth()->id())->where('status', 'accepted');
@@ -22,14 +32,11 @@ class FriendController extends Controller
             $query->where('receiver_id', auth()->id())->where('status', 'accepted');
         })->pluck('receiver_id')->toArray();
 
-        $friendSuggestions = User::whereNotIn('id', function ($query) {
-            $query->select('receiver_id')
-                  ->from('friends')
-                  ->where('sender_id', auth()->id())
-                  ->where('status', 'accepted')
-                  ->orWhere('status', 'pending');
-        })->get();
-                $user = Auth::user();
+
+        $friendSuggestions = User::whereNotIn('id', $friendRequests)->get();
+        
+        $user = Auth::user();
+                
 
         return view('friend', compact('sentFriendRequests', 'receivedFriendRequests', 'friends', 'user', 'friendSuggestions'));
     }

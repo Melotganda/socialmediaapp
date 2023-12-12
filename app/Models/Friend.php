@@ -19,4 +19,8 @@ class Friend extends Model
     {
         return $this->belongsTo(User::class, 'receiver_id');
     }
+    public function frid()
+    {
+        return $this->belongsTo(Friend::class, 'id');
+    }
 }
