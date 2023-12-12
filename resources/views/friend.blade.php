@@ -13,7 +13,6 @@
     @if($request->receiver)
         <p>Sent to: {{ $request->receiver->name }}</p>
     @endif
-
 @empty
     <p>No sent friend requests</p>
 @endforelse
