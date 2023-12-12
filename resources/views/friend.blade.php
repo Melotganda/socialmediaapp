@@ -7,7 +7,6 @@
 <body>
     <h2><a href="/">Back to News Feed</a></h2>
     <div style="border: 3px solid black;">
-      <h1>Friend Requests</h1>
 
     <h2>Sent Friend Requests</h2>
     @forelse($sentFriendRequests as $request)
