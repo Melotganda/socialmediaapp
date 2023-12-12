@@ -14,6 +14,7 @@
     @if($request->receiver)
         <p>Sent to: {{ $request->receiver->name }}</p>
     @endif
+    
 @empty
     <p>No sent friend requests</p>
 @endforelse
@@ -33,8 +34,8 @@
     @endforelse 
 
     <h1>Friends</h1>
-    @forelse(auth()->user()->friends as $friend)
-        <p>{{ $friend->name }}</p>
+    @forelse(auth()->user()->myFriends as $myFriend)
+        <p>{{ $myFriend->name }}</p>
     @empty
         <p>No friends yet</p>
     @endforelse

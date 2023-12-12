@@ -72,7 +72,7 @@ class User extends Authenticatable
         {
             return $this->friends->contains($user);
         }
-        public function friends()
+        public function myFriends()
     {
         return $this->belongsToMany(User::class, 'friends', 'sender_id', 'receiver_id')
             ->wherePivot('status', 'accepted')
