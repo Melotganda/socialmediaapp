@@ -22,16 +22,12 @@ class FriendController extends Controller
             $query->where('receiver_id', auth()->id())->where('status', 'accepted');
         })->pluck('receiver_id')->toArray();
 
-        $friendSuggestions = User::whereNotIn('id', function ($query) {
-            $query->select('receiver_id')
-                  ->from('friends')
-                  ->where('sender_id', auth()->id())
-                  ->where('status', 'accepted')
-                  ->orWhere('status', 'pending');
-        })->get();
-                $user = Auth::user();
+        $friendSuggestions = User::whereNotIn('id', $myFriends)->get();
+        $user = Auth::user();
 
-        return view('friend', compact('sentFriendRequests', 'receivedFriendRequests', 'friends', 'user', 'friendSuggestions'));
+        $users = User::whereNotIn('id', $friends->pluck('id')->push($user->id))->where('id', '!=', $user->id)->get();
+
+        return view('friend', compact('sentFriendRequests', 'receivedFriendRequests', 'myFriends', 'users', 'friendSuggestions'));
     }
     public function rejectRequest(Friend $friendRequest)
     {
