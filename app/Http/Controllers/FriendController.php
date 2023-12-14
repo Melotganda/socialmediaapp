@@ -15,6 +15,16 @@ class FriendController extends Controller
         $receivedFriendRequests = auth()->user()->receivedFriendRequests;
         $friends = auth()->user()->friends;
 
+        $friendRequests = Friend::where(function ($query) {
+            $query->where('sender_id', auth()->id())->where('status', 'pending');
+        })->orWhere(function ($query) {
+            $query->where('receiver_id', auth()->id())->where('status', 'pending');
+        })->orWhere(function ($query) {
+            $query->where('receiver_id', auth()->id())->where('status', 'accepted');
+        })->orWhere(function ($query) {
+            $query->where('sender_id', auth()->id())->where('status', 'accepted');
+        })->pluck('receiver_id')->toArray();
+
 
         $myFriends = Friend::where(function ($query) {
             $query->where('sender_id', auth()->id())->where('status', 'accepted');
