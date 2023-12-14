@@ -32,16 +32,8 @@ class FriendController extends Controller
             $query->where('receiver_id', auth()->id())->where('status', 'accepted');
         })->pluck('receiver_id')->toArray();
 
-<<<<<<< HEAD
         $friendSuggestions = User::whereNotIn('id', $myFriends)->get();
         $user = Auth::user();
-=======
-
-        $friendSuggestions = User::whereNotIn('id', $friendRequests)->get();
-        
-        $user = Auth::user();
-                
->>>>>>> newbranch
 
         $users = User::whereNotIn('id', $friends->pluck('id')->push($user->id))->where('id', '!=', $user->id)->get();
 
