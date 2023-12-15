@@ -17,6 +17,8 @@ const app = createApp({});
 
 import ExampleComponent from './components/ExampleComponent.vue';
 import Login from './components/Login/Login.vue';
+import Login from './components/Login.vue';
+app.component('login', Login);
 app.component('example-component', ExampleComponent);
 app.component('login', Login);
 
